@@ -51,31 +51,31 @@ class VGG16(torch.nn.Module):
         self.output_classes = output_classes
         self.image_size = image_size
         self.block_1 = torch.nn.Sequential(
-            CNN_Block(in_channels=self.input_channels, out_channels=64, kernel_size=3, stride=1, padding=1, norm='none', drop_out=0),
-            CNN_Block(in_channels=64, out_channels=64, kernel_size=3, stride=1, padding=1, norm='none', drop_out=0),
+            CNN_Block(in_channels=self.input_channels, out_channels=64, kernel_size=3, stride=1, padding=1, norm='batch_norm', drop_out=0.2),
+            CNN_Block(in_channels=64, out_channels=64, kernel_size=3, stride=1, padding=1, norm='batch_norm', drop_out=0.2),
             torch.nn.MaxPool2d(kernel_size=2)
         )
         self.block_2 = torch.nn.Sequential(
-            CNN_Block(in_channels=64, out_channels=128, kernel_size=3, stride=1, padding=1, norm='none', drop_out=0),
-            CNN_Block(in_channels=128, out_channels=128, kernel_size=3, stride=1, padding=1, norm='none', drop_out=0),
+            CNN_Block(in_channels=64, out_channels=128, kernel_size=3, stride=1, padding=1, norm='batch_norm', drop_out=0.2),
+            CNN_Block(in_channels=128, out_channels=128, kernel_size=3, stride=1, padding=1, norm='batch_norm', drop_out=0.2),
             torch.nn.MaxPool2d(kernel_size=2)
         )
         self.block_3 = torch.nn.Sequential(
-            CNN_Block(in_channels=128, out_channels=256, kernel_size=3, stride=1, padding=1, norm='none', drop_out=0),
-            CNN_Block(in_channels=256, out_channels=256, kernel_size=3, stride=1, padding=1, norm='none', drop_out=0),
-            CNN_Block(in_channels=256, out_channels=256, kernel_size=3, stride=1, padding=1, norm='none', drop_out=0),
+            CNN_Block(in_channels=128, out_channels=256, kernel_size=3, stride=1, padding=1, norm='batch_norm', drop_out=0.2),
+            CNN_Block(in_channels=256, out_channels=256, kernel_size=3, stride=1, padding=1, norm='batch_norm', drop_out=0.2),
+            CNN_Block(in_channels=256, out_channels=256, kernel_size=3, stride=1, padding=1, norm='batch_norm', drop_out=0.2),
             torch.nn.MaxPool2d(kernel_size=2)
         )
         self.block_4 = torch.nn.Sequential(
-            CNN_Block(in_channels=256, out_channels=512, kernel_size=3, stride=1, padding=1, norm='none', drop_out=0),
-            CNN_Block(in_channels=512, out_channels=512, kernel_size=3, stride=1, padding=1, norm='none', drop_out=0),
-            CNN_Block(in_channels=512, out_channels=512, kernel_size=3, stride=1, padding=1, norm='none', drop_out=0),
+            CNN_Block(in_channels=256, out_channels=512, kernel_size=3, stride=1, padding=1, norm='batch_norm', drop_out=0.2),
+            CNN_Block(in_channels=512, out_channels=512, kernel_size=3, stride=1, padding=1, norm='batch_norm', drop_out=0.2),
+            CNN_Block(in_channels=512, out_channels=512, kernel_size=3, stride=1, padding=1, norm='batch_norm', drop_out=0.2),
             torch.nn.MaxPool2d(kernel_size=2)
         )
         self.block_5 = torch.nn.Sequential(
-            CNN_Block(in_channels=512, out_channels=512, kernel_size=3, stride=1, padding=1, norm='none', drop_out=0),
-            CNN_Block(in_channels=512, out_channels=512, kernel_size=3, stride=1, padding=1, norm='none', drop_out=0),
-            CNN_Block(in_channels=512, out_channels=512, kernel_size=3, stride=1, padding=1, norm='none', drop_out=0),
+            CNN_Block(in_channels=512, out_channels=512, kernel_size=3, stride=1, padding=1, norm='batch_norm', drop_out=0.2),
+            CNN_Block(in_channels=512, out_channels=512, kernel_size=3, stride=1, padding=1, norm='batch_norm', drop_out=0.2),
+            CNN_Block(in_channels=512, out_channels=512, kernel_size=3, stride=1, padding=1, norm='batch_norm', drop_out=0.2),
             torch.nn.MaxPool2d(kernel_size=2)
         )
         self.feature_extraction = torch.nn.Sequential(
@@ -87,7 +87,7 @@ class VGG16(torch.nn.Module):
             MLP_Block(input_channel=self.output_size, output_channel=4096, activate_function='relu', drop_out=0),
             MLP_Block(input_channel=4096, output_channel=1000, activate_function='relu', drop_out=0),
             MLP_Block(input_channel=1000, output_channel=1000, activate_function='relu', drop_out=0),
-            MLP_Block(input_channel=1000, output_channel=self.output_classes, activate_function='none', drop_out=0),
+            MLP_Block(input_channel=1000, output_channel=self.output_classes, activate_function='batch_norm', drop_out=0.2),
         )
     
     def compute_output_size(self):

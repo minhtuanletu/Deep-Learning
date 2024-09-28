@@ -35,8 +35,8 @@ def split_dataset(input_folder, output_folder, train_ratio, val_ratio, test_rati
             dst_path = os.path.join(test_dir, image)
             shutil.copy(src_path, dst_path)
 
-input_folder = '/home/minhtuan/Desktop/Learn/Flower_Recognition/data/flowers'
-output_folder = '/home/minhtuan/Desktop/Learn/Flower_Recognition/total_data'
+input_folder = 'dataset/flowers/'
+output_folder = 'dataset/Flower_Recognition/'
 train_ratio = 0.8
 val_ratio = 0.1
 test_ratio = 0.1
