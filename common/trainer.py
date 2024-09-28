@@ -2,13 +2,13 @@ import os
 import torch
 from PIL import Image
 from torch.utils.data import DataLoader
-from dataset import *
+from common.dataset import *
 from model.InceptionNet.InceptionNetv1 import *
 from model.InceptionNet.InceptionNetv2 import *
 from model.Resnet.Resnet18 import *
 from model.Resnet.Resnet34 import *
 from model.Resnet.Resnet50 import *
-from model.Transformer.model import *
+from model.ViT.vit import *
 from model.VGG.VGG16 import VGG16
 from model.VGG.VGG19 import VGG19
 
@@ -39,6 +39,8 @@ class Trainer:
             self.model = Resnet34(input_channels=self.in_channels, output_classes=self.num_classes, image_size=self.input_size).to(self.device)
         elif model == 'resnet50':
             self.model = Resnet50(input_channels=self.in_channels, output_classes=self.num_classes, image_size=self.input_size).to(self.device)
+        # elif model == 'vit':
+        #     self.model = ViT(input_channels=self.in_channels, output_classes=self.num_classes, image_size=self.input_size).to(self.device)
         else:
             self.model = VGG16(input_channels=self.in_channels, output_classes=self.num_classes, image_size=self.input_size).to(self.device)
         # Create Dataloader
@@ -54,7 +56,7 @@ class Trainer:
         else:
             self.optimizer = torch.optim.Adam(self.model.parameters(), lr=3e-4, weight_decay=1e-5)
         if loss_func == 'bce':
-            self.loss_func = torch.nn.BCELoss()  
+            self.loss_func = torch.nn.BCELoss()
         else:
             self.loss_func = torch.nn.CrossEntropyLoss()
         self.epochs = epochs
