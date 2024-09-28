@@ -33,3 +33,10 @@ Dataset_Folder /
 │   │   ├── image2.png
 │   │   └── ...
 ```
+
+# 2. Dataset link
+
+```
+1. https://www.kaggle.com/datasets/alxmamaev/flowers-recognition
+2. https://www.kaggle.com/datasets/alessiocorrado99/animals10
+```

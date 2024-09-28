@@ -33,6 +33,12 @@ class Trainer:
             self.model = VGG16(input_channels=self.in_channels, output_classes=self.num_classes, image_size=self.input_size).to(self.device)
         elif model == 'vgg19':
             self.model = VGG19(input_channels=self.in_channels, output_classes=self.num_classes, image_size=self.input_size).to(self.device)
+        elif model == 'resnet18':
+            self.model = Resnet18(input_channels=self.in_channels, output_classes=self.num_classes, image_size=self.input_size).to(self.device)
+        elif model == 'resnet34':
+            self.model = Resnet34(input_channels=self.in_channels, output_classes=self.num_classes, image_size=self.input_size).to(self.device)
+        elif model == 'resnet50':
+            self.model = Resnet50(input_channels=self.in_channels, output_classes=self.num_classes, image_size=self.input_size).to(self.device)
         else:
             self.model = VGG16(input_channels=self.in_channels, output_classes=self.num_classes, image_size=self.input_size).to(self.device)
         # Create Dataloader

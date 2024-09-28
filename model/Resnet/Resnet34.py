@@ -81,17 +81,25 @@ class Resnet34(torch.nn.Module):
         self.block_2 = torch.nn.Sequential(
             Residual_Block(input_channels=64, output_channels=64, drop_out=0, activate_function='relu'),
             Residual_Block(input_channels=64, output_channels=64, drop_out=0, activate_function='relu'),
+            Residual_Block(input_channels=64, output_channels=64, drop_out=0, activate_function='relu'),
         )
         self.block_3 = torch.nn.Sequential(
             Residual_Block(input_channels=64, output_channels=128, drop_out=0, activate_function='relu'),
+            Residual_Block(input_channels=128, output_channels=128, drop_out=0, activate_function='relu'),
+            Residual_Block(input_channels=128, output_channels=128, drop_out=0, activate_function='relu'),
             Residual_Block(input_channels=128, output_channels=128, drop_out=0, activate_function='relu'),
         )
         self.block_4 = torch.nn.Sequential(
             Residual_Block(input_channels=128, output_channels=256, drop_out=0, activate_function='relu'),
             Residual_Block(input_channels=256, output_channels=256, drop_out=0, activate_function='relu'),
+            Residual_Block(input_channels=256, output_channels=256, drop_out=0, activate_function='relu'),
+            Residual_Block(input_channels=256, output_channels=256, drop_out=0, activate_function='relu'),
+            Residual_Block(input_channels=256, output_channels=256, drop_out=0, activate_function='relu'),
+            Residual_Block(input_channels=256, output_channels=256, drop_out=0, activate_function='relu'),
         )
         self.block_5 = torch.nn.Sequential(
             Residual_Block(input_channels=256, output_channels=512, drop_out=0, activate_function='relu'),
+            Residual_Block(input_channels=512, output_channels=512, drop_out=0, activate_function='relu'),
             Residual_Block(input_channels=512, output_channels=512, drop_out=0, activate_function='relu'),
         )
         self.feature_extraction = torch.nn.Sequential(
