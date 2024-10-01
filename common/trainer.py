@@ -127,7 +127,7 @@ class Trainer:
                         - Train accuracy {train_accuracy_value:.2f} - Val accuracy {val_accuracy_value:.2f}\
                         - Train precision {train_precision_value:.2f} - Val precision {val_precision_value:.2f}\
                         - Train recall: {train_recall_value:.2f} - Val recall: {val_recall_value:.2f}\
-                        - Train f1: {train_f1_value:.2f} - Val f1: {val_recall_value:.2f}")
+                        - Train f1: {train_f1_value:.2f} - Val f1: {val_f1_value:.2f}")
             
     def inference(self, image: Image):
         self.model.eval()
