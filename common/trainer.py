@@ -3,6 +3,7 @@ import torch
 from PIL import Image
 from torch.utils.data import DataLoader
 from common.dataset import *
+from common.metrics import Compute_Metrics
 from model.InceptionNet.InceptionNetv1 import *
 from model.InceptionNet.InceptionNetv2 import *
 from model.Resnet.Resnet18 import *
@@ -17,6 +18,7 @@ class Trainer:
                  batch_size: int, optimizer: str, loss_func: str, epochs: int, model: str,
                  in_channels: int, input_size: tuple):
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        self.metrics = Compute_Metrics()
         # Load Dataset
         self.train_path = train_path
         self.val_path = val_path
@@ -64,6 +66,7 @@ class Trainer:
     def train_func(self):
         self.model.train()
         loss_value = 0
+        accuracy_value, precision_value, recall_value, f1_value = 0, 0, 0, 0
         for _, (x, y) in enumerate(self.train_dataloader):
             self.optimizer.zero_grad()
             x, y = x.to(self.device), y.to(self.device)
@@ -72,19 +75,38 @@ class Trainer:
             loss.backward()
             self.optimizer.step()
             loss_value += loss.item()
+            accuracy, precision, recall, f1 = self.metrics.compute(y, y_pred)
+            accuracy_value += accuracy
+            precision_value += precision
+            recall_value += recall
+            f1_value += f1
         loss_value = loss_value / len(self.train_dataloader)
-        return loss_value
+        accuracy_value = accuracy_value / len(self.train_dataloader)
+        precision_value = precision_value / len(self.train_dataloader)
+        recall_value = recall_value / len(self.train_dataloader)
+        f1_value = f1_value / len(self.train_dataloader)
+        return loss_value, accuracy_value, precision_value, recall_value, f1_value
     
     def val_func(self):
         self.model.eval()
         loss_value = 0
+        accuracy_value, precision_value, recall_value, f1_value = 0, 0, 0, 0
         for _, (x, y) in enumerate(self.val_dataloader):
             x, y = x.to(self.device), y.to(self.device)
             y_pred = self.model(x)
             loss = self.loss_func(y_pred, y)
             loss_value += loss.item()
+            accuracy, precision, recall, f1 = self.metrics.compute(y, y_pred)
+            accuracy_value += accuracy
+            precision_value += precision
+            recall_value += recall
+            f1_value += f1
         loss_value = loss_value / len(self.val_dataloader)
-        return loss_value
+        accuracy_value = accuracy_value / len(self.train_dataloader)
+        precision_value = precision_value / len(self.train_dataloader)
+        recall_value = recall_value / len(self.train_dataloader)
+        f1_value = f1_value / len(self.train_dataloader)
+        return loss_value, accuracy_value, precision_value, recall_value, f1_value
     
     def test_func(self):
         self.model.eval()
@@ -99,9 +121,13 @@ class Trainer:
         
     def train(self):
         for epoch in range(self.epochs):
-            train_loss = self.train_func()
-            val_loss = self.val_func()
-            print(f"Epoch: {epoch:2d} - Train loss: {train_loss:.2f} - Val loss: {val_loss:.2f}")
+            train_loss, train_accuracy_value, train_precision_value, train_recall_value, train_f1_value = self.train_func()
+            val_loss, val_accuracy_value, val_precision_value, val_recall_value, val_f1_value = self.val_func()
+            print(f"Epoch: {epoch:2d} - Train loss: {train_loss:.2f} - Val loss: {val_loss:.2f}\
+                        - Train accuracy {train_accuracy_value:.2f} - Val accuracy {val_accuracy_value:.2f}\
+                        - Train precision {train_precision_value:.2f} - Val precision {val_precision_value:.2f}\
+                        - Train recall: {train_recall_value:.2f} - Val recall: {val_recall_value:.2f}\
+                        - Train f1: {train_f1_value:.2f} - Val f1: {val_recall_value:.2f}")
             
     def inference(self, image: Image):
         self.model.eval()
