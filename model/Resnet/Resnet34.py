@@ -30,21 +30,29 @@ class Residual_Block(torch.nn.Module):
         self.input_channels = input_channels
         self.output_channels = output_channels
         self.drop_out = drop_out
-        if self.activate_function == 'relu':
+        if activate_function == 'relu':
             self.activate_function = torch.nn.ReLU()
-        elif self.activate_function == 'leaky_relu':
+        elif activate_function == 'leaky_relu':
             self.activate_function = torch.nn.LeakyReLU()
-        elif self.activate_function == 'tanh':
+        elif activate_function == 'tanh':
             self.activate_function = torch.nn.Tanh()
         self.residual = torch.nn.Sequential(
             CNN_Block(in_channels=self.input_channels, out_channels=self.output_channels, kernel_size=3, stride=1, padding=1, norm='none', drop_out=0),
             self.activate_function,
             CNN_Block(in_channels=self.output_channels, out_channels=self.output_channels, kernel_size=3, stride=1, padding=1, norm='none', drop_out=0)
         )
-        
+        if self.input_channels != self.output_channels:
+            self.shortcut_connection = CNN_Block(in_channels=self.input_channels, out_channels=self.output_channels, kernel_size=1, stride=1, padding=0, norm='none', drop_out=0)
+        else:
+            self.shortcut_connection = None
+
     def forward(self, x):
+        if self.shortcut_connection is not None:
+            x_shortcut = self.shortcut_connection(x)
+        else:
+            x_shortcut = x
         output = self.residual(x)
-        return self.activate_function(output + x)
+        return self.activate_function(output + x_shortcut)
     
 class MLP_Block(torch.nn.Module):
     def __init__(self, input_channel, output_channel, activate_function='relu', drop_out=0):

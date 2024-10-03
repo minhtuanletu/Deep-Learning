@@ -4,6 +4,7 @@ from PIL import Image
 from torch.utils.data import DataLoader
 from common.dataset import *
 from common.metrics import Compute_Metrics
+from common.early_stopping import EarlyStopping
 from model.InceptionNet.InceptionNetv1 import *
 from model.InceptionNet.InceptionNetv2 import *
 from model.Resnet.Resnet18 import *
@@ -62,6 +63,7 @@ class Trainer:
         else:
             self.loss_func = torch.nn.CrossEntropyLoss()
         self.epochs = epochs
+        self.early_stop = EarlyStopping(patience=5, delta=1e-3)
         
     def train_func(self):
         self.model.train()
@@ -102,10 +104,10 @@ class Trainer:
             recall_value += recall
             f1_value += f1
         loss_value = loss_value / len(self.val_dataloader)
-        accuracy_value = accuracy_value / len(self.train_dataloader)
-        precision_value = precision_value / len(self.train_dataloader)
-        recall_value = recall_value / len(self.train_dataloader)
-        f1_value = f1_value / len(self.train_dataloader)
+        accuracy_value = accuracy_value / len(self.val_dataloader)
+        precision_value = precision_value / len(self.val_dataloader)
+        recall_value = recall_value / len(self.val_dataloader)
+        f1_value = f1_value / len(self.val_dataloader)
         return loss_value, accuracy_value, precision_value, recall_value, f1_value
     
     def test_func(self):
@@ -128,6 +130,7 @@ class Trainer:
                         - Train precision {train_precision_value:.2f} - Val precision {val_precision_value:.2f}\
                         - Train recall: {train_recall_value:.2f} - Val recall: {val_recall_value:.2f}\
                         - Train f1: {train_f1_value:.2f} - Val f1: {val_f1_value:.2f}")
+            self.early_stop(val_loss)
             
     def inference(self, image: Image):
         self.model.eval()

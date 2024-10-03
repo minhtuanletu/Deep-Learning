@@ -14,9 +14,9 @@ in_channels = 3
 input_size = (224, 224)
 save_path = ''
 transform = v2.Compose([
+    v2.Resize(input_size, antialias=True),
     v2.PILToTensor(),
-    v2.ToDtype(dtype=torch.float32),
-    v2.Resize(input_size)
+    v2.ToDtype(torch.float),
 ])
 trainer = Trainer(train_path=train_path, val_path=val_path, test_path=test_path, transform=transform, 
                  batch_size=batch_size, optimizer=optimizer, loss_func=loss_func, epochs=epochs, model=model,
