@@ -5,14 +5,14 @@ from torch.utils.data import DataLoader
 from common.dataset import *
 from common.metrics import Compute_Metrics
 from common.early_stopping import EarlyStopping
-from model.InceptionNet.InceptionNetv1 import *
-from model.InceptionNet.InceptionNetv2 import *
-from model.Resnet.Resnet18 import *
-from model.Resnet.Resnet34 import *
-from model.Resnet.Resnet50 import *
-from model.ViT.vit import *
-from model.VGG.VGG16 import VGG16
-from model.VGG.VGG19 import VGG19
+from common_model.InceptionNet.InceptionNetv1 import *
+from common_model.InceptionNet.InceptionNetv2 import *
+from common_model.Resnet.Resnet18 import *
+from common_model.Resnet.Resnet34 import *
+from common_model.Resnet.Resnet50 import *
+from common_model.ViT.vit import *
+from common_model.VGG.VGG16 import VGG16
+from common_model.VGG.VGG19 import VGG19
 
 class Trainer:
     def __init__(self, train_path: str, val_path: str, test_path: str, transform: Compose, 

@@ -33,5 +33,4 @@ class Compute_Metrics:
         precision = self.compute_precision(y, y_pred)
         recall = self.compute_recall(y, y_pred)
         f1 = self.compute_f1(y, y_pred)
-        print(accuracy, precision, recall, f1)
         return accuracy, precision, recall, f1

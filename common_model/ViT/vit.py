@@ -1,6 +1,6 @@
 import torch
-from model.ViT.positional import Positional_Encoding
-from model.ViT.transformer_block import TransformerBlock
+from common_model.ViT.positional import Positional_Encoding
+from common_model.ViT.transformer_block import TransformerBlock
 
 class CNNBlock(torch.nn.Module):
     def __init__(self, in_channels, out_channels, kernel_size, stride, padding, pool=False):

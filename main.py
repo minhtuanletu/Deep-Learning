@@ -5,11 +5,11 @@ from common.trainer import Trainer
 train_path = 'dataset/Flower_Recognition/train'
 val_path = 'dataset/Flower_Recognition/val'
 test_path = 'dataset/Flower_Recognition/test'
-batch_size = 64
+batch_size = 256
 optimizer = 'adam'
 loss_func = 'cross_entropy'
 epochs = 50
-model = 'vgg16'
+model = 'resnet34'
 in_channels = 3
 input_size = (224, 224)
 save_path = ''

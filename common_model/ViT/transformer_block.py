@@ -1,5 +1,5 @@
 import torch
-from model.ViT.multihead import MultiHeadAttention
+from common_model.ViT.multihead import MultiHeadAttention
 
 class TransformerBlock(torch.nn.Module):
     def __init__(self, n_head, n_dim, n_expansion):
